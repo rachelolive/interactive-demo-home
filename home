@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+  /* --- CORE VARIABLES & RESET --- */
+  :root {
+    --signal-purple: #6246ea;
+    --signal-dark: #1e1e24;
+    --signal-text: #4b4b4b;
+    --signal-bg: #fdfdfd;
+    --signal-gradient: linear-gradient(135deg, #582be8 0%, #d6249f 100%);
+    --radius-sm: 8px;
+    --radius-lg: 16px;
+  }
+  
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+
+  .demo-container {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: var(--signal-bg);
+    min-height: 750px; 
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    overflow: hidden;
+    border: 1px solid #e1e1e1;
+  }
+
+  /* --- LEFT COLUMN: VALUE PROP --- */
+  .left-col {
+    flex: 1;
+    min-width: 350px;
+    background: #f4f6fa;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .brand-logo {
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--signal-dark);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+  
+  /* NEW: Controls the size of your logo image */
+  .brand-logo img {
+    height: 40px; /* Adjust this height to match your preferred logo size */
+    width: auto;
+    display: block;
+  }
+
+  .hero-text h2 {
+    font-size: 28px;
+    line-height: 1.3;
+    color: var(--signal-dark);
+    margin-bottom: 16px;
+  }
+
+  .hero-text p {
+    color: var(--signal-text);
+    line-height: 1.5;
+    font-size: 16px;
+    margin-bottom: 30px;
+  }
+
+  /* CSS Re-creation of Risk Matrix */
+  .risk-matrix-visual {
+    background: white;
+    padding: 20px;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+  }
+  
+  .matrix-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 4px;
+    height: 180px;
+    position: relative;
+  }
+
+  .zone { background: #f0f0f0; border-radius: 4px; position: relative;}
+  .zone.high-risk { background: rgba(214, 36, 159, 0.15); } 
+  
+  .bubble {
+    background: #d6249f; 
+    border-radius: 50%;
+    position: absolute;
+    opacity: 0.7;
+    animation: pulse 3s infinite;
+  }
+  
+  .b1 { width: 40px; height: 40px; top: 20%; right: 20%; } 
+  .b2 { width: 30px; height: 30px; top: 40%; right: 40%; background: #ff8e8e;} 
+  .b3 { width: 20px; height: 20px; bottom: 20%; left: 20%; background: #ccc;} 
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+
+  .testimonial {
+    font-size: 13px;
+    color: #666;
+    border-left: 3px solid #d6249f;
+    padding-left: 15px;
+    line-height: 1.5;
+    margin-top: auto;
+  }
+  
+  .testimonial strong { display: block; margin-top: 8px; color: var(--signal-dark); }
+
+  /* --- RIGHT COLUMN: INTERACTIVE FORM --- */
+  .right-col {
+    flex: 1.2;
+    min-width: 350px;
+    padding: 50px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-header { margin-bottom: 25px; }
+  .form-header h3 { font-size: 24px; color: var(--signal-dark); margin-bottom: 8px; }
+  .form-header p { color: #888; font-size: 14px; }
+
+  /* TOGGLE SELECTOR */
+  .product-selector {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .option-card {
+    flex: 1;
+    border: 2px solid #eee;
+    border-radius: var(--radius-sm);
+    padding: 15px;
+    cursor: default; 
+    transition: all 0.2s ease;
+    position: relative;
+    opacity: 0.6; /* Dim unselected options */
+  }
+  
+  /* Active State (Selected) */
+  .option-card.selected {
+    border-color: #582be8;
+    background-color: rgba(88, 43, 232, 0.03);
+    opacity: 1;
+  }
+
+  .option-card.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #582be8;
+    font-weight: bold;
+  }
+
+  .card-title { font-weight: 700; font-size: 14px; color: var(--signal-dark); display: block; margin-bottom: 4px; }
+  .card-desc { font-size: 12px; color: #666; line-height: 1.3; }
+
+  /* IFRAME CONTAINER */
+  .iframe-wrapper {
+    flex-grow: 1;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .trust-signals {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    opacity: 0.8;
+    padding-bottom: 20px;
+  }
+  
+  .badge {
+    background: #f4f6fa;
+    border: 1px solid #eee;
+    padding: 5px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--signal-dark);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  /* MOBILE RESPONSIVE */
+  @media (max-width: 768px) {
+    .demo-container { flex-direction: column; }
+    .risk-matrix-visual { display: none; } 
+    .right-col { padding: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-container">
+  <div class="left-col">
+    <div>
+      <div class="brand-logo">
+        <img src="logo.png" alt="Signal AI Logo">
+        
+        SIGNAL AI
+      </div>
+      
+      <div class="hero-text">
+        <h2>Find the signal in the noise.</h2>
+        <p>Join Fortune 500 companies transforming external data into actionable risk & reputation insights.</p>
+      </div>
+
+      <div class="risk-matrix-visual">
+        <div style="font-size: 10px; font-weight: bold; margin-bottom: 5px; color:#999;">RISK MATRIX</div>
+        <div class="matrix-grid">
+          <div class="zone"></div>
+          <div class="zone high-risk">
+             <div class="bubble b1" title="Legal Risk"></div>
+             <div class="bubble b2" title="Consumer Activism"></div>
+          </div>
+          <div class="zone">
+             <div class="bubble b3" title="Regulatory"></div>
+          </div>
+          <div class="zone"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-top:5px; font-size:9px; color:#aaa;">
+            <span>Low Severity</span>
+            <span>High Severity</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial">
+      "Signal AI's data allows us to 'shrink the internet' to evaluate what's happening now and anticipate what's coming next."
+      <strong>— Jeffrey Cutler, BCW</strong>
+    </div>
+  </div>
+
+  <div class="right-col">
+    <div class="form-header">
+      <h3>Request a Demo</h3>
+      <p>Configure your Ask AIQ™ session.</p>
+    </div>
+
+    <div class="product-selector">
+      
+      <div class="option-card">
+        <span class="card-title">Risk Platform</span>
+        <span class="card-desc">Proactive identification & ongoing surveillance.</span>
+      </div>
+
+      <div class="option-card selected">
+        <span class="card-title">Ask AIQ™</span>
+        <span class="card-desc">Instant, generative AI insights & answers.</span>
+      </div>
+      
+    </div>
+
+    <div class="iframe-wrapper">
+      <iframe 
+        src="https://go.signal-ai.com/l/501881/2026-01-13/2bfy7zk" 
+        width="100%" 
+        height="500" 
+        type="text/html" 
+        frameborder="0" 
+        allowTransparency="true" 
+        style="border: 0">
+      </iframe>
+    </div>
+      
+    <div class="trust-signals">
+      <div class="badge"><span style="color:#d6249f">★</span> G2 LEADER 2026</div>
+      <div class="badge"><span style="color:#d6249f">★</span> HIGH PERFORMER</div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
