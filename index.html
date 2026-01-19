@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signal AI Request Demo</title>
 <style>
   /* --- CORE VARIABLES & RESET --- */
   :root {
@@ -51,9 +54,8 @@
     margin-bottom: 40px;
   }
   
-  /* NEW: Controls the size of your logo image */
   .brand-logo img {
-    height: 40px; /* Adjust this height to match your preferred logo size */
+    height: 40px; 
     width: auto;
     display: block;
   }
@@ -148,12 +150,16 @@
     border: 2px solid #eee;
     border-radius: var(--radius-sm);
     padding: 15px;
-    cursor: default; 
+    cursor: pointer; /* Changed to pointer so user knows it's clickable */
     transition: all 0.2s ease;
     position: relative;
     opacity: 0.6; /* Dim unselected options */
   }
   
+  .option-card:hover {
+    background-color: #fafafa;
+  }
+
   /* Active State (Selected) */
   .option-card.selected {
     border-color: #582be8;
@@ -216,9 +222,7 @@
   <div class="left-col">
     <div>
       <div class="brand-logo">
-        <img src="logo.png" alt="Signal AI Logo">
-        
-      
+        <img src="logo.png" alt="Signal AI" style="max-height:40px; background:#ddd; min-width:100px;">
       </div>
       
       <div class="hero-text">
@@ -255,17 +259,17 @@
   <div class="right-col">
     <div class="form-header">
       <h3>Request a Demo</h3>
-      <p>Access your Ask AIQ demo.</p>
+      <p>Access your demo.</p>
     </div>
 
     <div class="product-selector">
       
-      <div class="option-card">
+      <div class="option-card" id="option-risk">
         <span class="card-title">Risk Platform</span>
         <span class="card-desc">Proactive identification & ongoing surveillance.</span>
       </div>
 
-      <div class="option-card selected">
+      <div class="option-card selected" id="option-aiq">
         <span class="card-title">Ask AIQ</span>
         <span class="card-desc">Instant, generative AI insights & answers.</span>
       </div>
@@ -274,6 +278,7 @@
 
     <div class="iframe-wrapper">
       <iframe 
+        id="form-iframe"
         src="https://go.signal-ai.com/l/501881/2026-01-13/2bfy7zk" 
         width="100%" 
         height="500" 
@@ -291,6 +296,36 @@
 
   </div>
 </div>
+
+<script>
+  // 1. Define the URLs
+  const urlAIQ = "https://go.signal-ai.com/l/501881/2026-01-13/2bfy7zk";
+  const urlRisk = "https://go.signal-ai.com/l/501881/2026-01-19/2bfz4s5";
+
+  // 2. Get Elements
+  const btnRisk = document.getElementById('option-risk');
+  const btnAIQ = document.getElementById('option-aiq');
+  const iframe = document.getElementById('form-iframe');
+
+  // 3. Add Event Listeners
+  btnRisk.addEventListener('click', function() {
+      // Toggle Classes
+      btnRisk.classList.add('selected');
+      btnAIQ.classList.remove('selected');
+      
+      // Switch Iframe Source (Forces reload of the new form)
+      iframe.src = urlRisk;
+  });
+
+  btnAIQ.addEventListener('click', function() {
+      // Toggle Classes
+      btnAIQ.classList.add('selected');
+      btnRisk.classList.remove('selected');
+      
+      // Switch Iframe Source (Forces reload of the new form)
+      iframe.src = urlAIQ;
+  });
+</script>
 
 </body>
 </html>
