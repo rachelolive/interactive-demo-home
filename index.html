@@ -40,7 +40,7 @@
     padding: 40px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start; 
     position: relative;
   }
 
@@ -51,7 +51,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
   }
   
   .brand-logo img {
@@ -74,43 +74,16 @@
     margin-bottom: 30px;
   }
 
-  /* CSS Re-creation of Risk Matrix */
-  .risk-matrix-visual {
-    background: white;
-    padding: 20px;
+  /* NEW: Dynamic Hero Image Style */
+  .hero-visual {
+    width: 100%;
+    height: auto;
     border-radius: var(--radius-sm);
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     margin-bottom: 30px;
-  }
-  
-  .matrix-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 4px;
-    height: 180px;
-    position: relative;
-  }
-
-  .zone { background: #f0f0f0; border-radius: 4px; position: relative;}
-  .zone.high-risk { background: rgba(214, 36, 159, 0.15); } 
-  
-  .bubble {
-    background: #d6249f; 
-    border-radius: 50%;
-    position: absolute;
-    opacity: 0.7;
-    animation: pulse 3s infinite;
-  }
-  
-  .b1 { width: 40px; height: 40px; top: 20%; right: 20%; } 
-  .b2 { width: 30px; height: 30px; top: 40%; right: 40%; background: #ff8e8e;} 
-  .b3 { width: 20px; height: 20px; bottom: 20%; left: 20%; background: #ccc;} 
-
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+    display: block;
+    background: white; /* Placeholder background */
+    transition: opacity 0.2s ease-in-out;
   }
 
   .testimonial {
@@ -119,7 +92,7 @@
     border-left: 3px solid #d6249f;
     padding-left: 15px;
     line-height: 1.5;
-    margin-top: auto;
+    margin-top: 10px; 
   }
   
   .testimonial strong { display: block; margin-top: 8px; color: var(--signal-dark); }
@@ -150,10 +123,10 @@
     border: 2px solid #eee;
     border-radius: var(--radius-sm);
     padding: 15px;
-    cursor: pointer; /* Changed to pointer so user knows it's clickable */
+    cursor: pointer; 
     transition: all 0.2s ease;
     position: relative;
-    opacity: 0.6; /* Dim unselected options */
+    opacity: 0.6; 
   }
   
   .option-card:hover {
@@ -211,7 +184,8 @@
   /* MOBILE RESPONSIVE */
   @media (max-width: 768px) {
     .demo-container { flex-direction: column; }
-    .risk-matrix-visual { display: none; } 
+    /* Hide hero image on small screens to save space */
+    .hero-visual { display: none; } 
     .right-col { padding: 30px; }
   }
 </style>
@@ -222,7 +196,7 @@
   <div class="left-col">
     <div>
       <div class="brand-logo">
-        <img src="logo.png" alt="Signal AI" style="max-height:40px; background:#ddd; min-width:100px;">
+        <img src="logo.png" alt="Signal AI">
       </div>
       
       <div class="hero-text">
@@ -230,24 +204,8 @@
         <p>Join Fortune 500 companies transforming external data into actionable risk & reputation insights.</p>
       </div>
 
-      <div class="risk-matrix-visual">
-        <div style="font-size: 10px; font-weight: bold; margin-bottom: 5px; color:#999;">RISK MATRIX</div>
-        <div class="matrix-grid">
-          <div class="zone"></div>
-          <div class="zone high-risk">
-             <div class="bubble b1" title="Legal Risk"></div>
-             <div class="bubble b2" title="Consumer Activism"></div>
-          </div>
-          <div class="zone">
-             <div class="bubble b3" title="Regulatory"></div>
-          </div>
-          <div class="zone"></div>
-        </div>
-        <div style="display:flex; justify-content:space-between; margin-top:5px; font-size:9px; color:#aaa;">
-            <span>Low Severity</span>
-            <span>High Severity</span>
-        </div>
-      </div>
+      <img id="hero-image" src="ASK_AIQ_HERO-1.png" alt="Hero Image" class="hero-visual">
+      
     </div>
 
     <div class="testimonial">
@@ -298,32 +256,54 @@
 </div>
 
 <script>
-  // 1. Define the URLs
+  // 1. Define Constants (URLs and Image Paths)
   const urlAIQ = "https://go.signal-ai.com/l/501881/2026-01-13/2bfy7zk";
   const urlRisk = "https://go.signal-ai.com/l/501881/2026-01-19/2bfz4s5";
+  const imgAIQ = "ASK_AIQ_HERO-1.png";
+  const imgRisk = "Risk_Platform_hero_2.png";
 
   // 2. Get Elements
   const btnRisk = document.getElementById('option-risk');
   const btnAIQ = document.getElementById('option-aiq');
   const iframe = document.getElementById('form-iframe');
+  const heroImage = document.getElementById('hero-image'); // Get the image element
 
-  // 3. Add Event Listeners
+  // Helper function to set state
+  function setPageState(isRisk) {
+      if (isRisk) {
+          btnRisk.classList.add('selected');
+          btnAIQ.classList.remove('selected');
+          iframe.src = urlRisk;
+          heroImage.src = imgRisk;
+      } else {
+          btnAIQ.classList.add('selected');
+          btnRisk.classList.remove('selected');
+          iframe.src = urlAIQ;
+          heroImage.src = imgAIQ;
+      }
+  }
+
+  // 3. Add Event Listeners for Clicking
   btnRisk.addEventListener('click', function() {
-      // Toggle Classes
-      btnRisk.classList.add('selected');
-      btnAIQ.classList.remove('selected');
-      
-      // Switch Iframe Source (Forces reload of the new form)
-      iframe.src = urlRisk;
+      setPageState(true); // Switch to Risk state
   });
 
   btnAIQ.addEventListener('click', function() {
-      // Toggle Classes
-      btnAIQ.classList.add('selected');
-      btnRisk.classList.remove('selected');
-      
-      // Switch Iframe Source (Forces reload of the new form)
-      iframe.src = urlAIQ;
+      setPageState(false); // Switch to AIQ state
+  });
+
+  // 4. Handle "Back Button" behavior (Page Show Event)
+  window.addEventListener( "pageshow", function ( event ) {
+      var historyTraversal = event.persisted || 
+                             ( typeof window.performance != "undefined" && 
+                               window.performance.navigation.type === 2 );
+                               
+      if ( historyTraversal ) {
+        // Handle page restore. Check which button is currently selected visually.
+        const isRiskSelected = btnRisk.classList.contains('selected');
+        // Force reload of correct state based on visual selection
+        setPageState(isRiskSelected);
+      }
   });
 </script>
 
