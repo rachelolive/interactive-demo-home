@@ -74,7 +74,7 @@
     margin-bottom: 30px;
   }
 
-  /* NEW: Dynamic Hero Image Style */
+  /* Dynamic Hero Image Style */
   .hero-visual {
     width: 100%;
     height: auto;
@@ -82,7 +82,7 @@
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     margin-bottom: 30px;
     display: block;
-    background: white; /* Placeholder background */
+    background: white; 
     transition: opacity 0.2s ease-in-out;
   }
 
@@ -133,7 +133,6 @@
     background-color: #fafafa;
   }
 
-  /* Active State (Selected) */
   .option-card.selected {
     border-color: #582be8;
     background-color: rgba(88, 43, 232, 0.03);
@@ -157,6 +156,14 @@
     flex-grow: 1;
     width: 100%;
     margin-top: 10px;
+    position: relative; /* Needed for loading text */
+  }
+
+  /* VISUAL DEBUGGING: This makes the iframe area visible even if content is blocked */
+  #form-iframe {
+      background-color: #f9f9f9; 
+      border: 1px dashed #e0e0e0 !important; /* Dashed border to see the box */
+      border-radius: 8px;
   }
 
   .trust-signals {
@@ -181,10 +188,8 @@
     gap: 5px;
   }
 
-  /* MOBILE RESPONSIVE */
   @media (max-width: 768px) {
     .demo-container { flex-direction: column; }
-    /* Hide hero image on small screens to save space */
     .hero-visual { display: none; } 
     .right-col { padding: 30px; }
   }
@@ -205,7 +210,6 @@
       </div>
 
       <img id="hero-image" src="ASK_AIQ_HERO-1.png" alt="Hero Image" class="hero-visual">
-      
     </div>
 
     <div class="testimonial">
@@ -221,7 +225,6 @@
     </div>
 
     <div class="product-selector">
-      
       <div class="option-card" id="option-risk">
         <span class="card-title">Risk Platform</span>
         <span class="card-desc">Proactive identification & ongoing surveillance.</span>
@@ -231,10 +234,14 @@
         <span class="card-title">Ask AIQ</span>
         <span class="card-desc">Instant, generative AI insights & answers.</span>
       </div>
-      
     </div>
 
     <div class="iframe-wrapper">
+        <div style="position: absolute; top: 45%; left: 0; right: 0; text-align: center; z-index: 0; color: #999; font-size: 12px;">
+            Loading secure form... <br>
+            (If blank, check browser security settings)
+        </div>
+
       <iframe 
         id="form-iframe"
         src="https://go.signal-ai.com/l/501881/2026-01-13/2bfy7zk" 
@@ -243,7 +250,7 @@
         type="text/html" 
         frameborder="0" 
         allowTransparency="true" 
-        style="border: 0">
+        style="position: relative; z-index: 1;">
       </iframe>
     </div>
       
@@ -256,19 +263,25 @@
 </div>
 
 <script>
-  // 1. Define Constants (URLs and Image Paths)
+  // --- CONFIGURATION ---
+  
+  // OPTION 1: Real URLs 
+  // (If these are blank, the server is likely blocking embedding)
   const urlAIQ = "https://go.signal-ai.com/l/501881/2026-01-13/2bfy7zk";
   const urlRisk = "https://go.signal-ai.com/l/501881/2026-01-19/2bfz4s5";
+
+  // OPTION 2: Mockup URLs (Uncomment these if you just want to test the design logic)
+  // const urlAIQ = "https://en.wikipedia.org/wiki/Artificial_intelligence"; 
+  // const urlRisk = "https://en.wikipedia.org/wiki/Risk_management";
+
   const imgAIQ = "ASK_AIQ_HERO-1.png";
   const imgRisk = "Risk_Platform_hero_2.png";
 
-  // 2. Get Elements
   const btnRisk = document.getElementById('option-risk');
   const btnAIQ = document.getElementById('option-aiq');
   const iframe = document.getElementById('form-iframe');
-  const heroImage = document.getElementById('hero-image'); // Get the image element
+  const heroImage = document.getElementById('hero-image');
 
-  // Helper function to set state
   function setPageState(isRisk) {
       if (isRisk) {
           btnRisk.classList.add('selected');
@@ -283,25 +296,16 @@
       }
   }
 
-  // 3. Add Event Listeners for Clicking
-  btnRisk.addEventListener('click', function() {
-      setPageState(true); // Switch to Risk state
-  });
+  btnRisk.addEventListener('click', function() { setPageState(true); });
+  btnAIQ.addEventListener('click', function() { setPageState(false); });
 
-  btnAIQ.addEventListener('click', function() {
-      setPageState(false); // Switch to AIQ state
-  });
-
-  // 4. Handle "Back Button" behavior (Page Show Event)
+  // Handle Back Button
   window.addEventListener( "pageshow", function ( event ) {
       var historyTraversal = event.persisted || 
                              ( typeof window.performance != "undefined" && 
                                window.performance.navigation.type === 2 );
-                               
       if ( historyTraversal ) {
-        // Handle page restore. Check which button is currently selected visually.
         const isRiskSelected = btnRisk.classList.contains('selected');
-        // Force reload of correct state based on visual selection
         setPageState(isRiskSelected);
       }
   });
