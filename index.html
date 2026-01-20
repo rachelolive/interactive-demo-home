@@ -255,8 +255,8 @@
     </div>
       
     <div class="trust-signals">
-      <div class="badge"><span style="color:#d6249f">★</span> G2 LEADER 2026</div>
-      <div class="badge"><span style="color:#d6249f">★</span> HIGH PERFORMER</div>
+      <div class="badge"><span style="color:#d6249f">★</span> GRC Innovation Award winner</div>
+      <div class="badge"><span style="color:#d6249f">★</span> Best Use of AI in Risk Management</div>
     </div>
 
   </div>
@@ -300,13 +300,29 @@
   btnAIQ.addEventListener('click', function() { setPageState(false); });
 
   // Handle Back Button
+  // Handle Back Button (Correção para recarregar o formulário)
   window.addEventListener( "pageshow", function ( event ) {
       var historyTraversal = event.persisted || 
                              ( typeof window.performance != "undefined" && 
                                window.performance.navigation.type === 2 );
+      
       if ( historyTraversal ) {
+        // 1. Verificar qual opção estava selecionada visualmente
         const isRiskSelected = btnRisk.classList.contains('selected');
-        setPageState(isRiskSelected);
+        
+        // 2. Determinar a URL correta baseada na seleção
+        const targetUrl = isRiskSelected ? urlRisk : urlAIQ;
+
+        // 3. Forçar o recarregamento do iframe
+        // O truque é definir como 'about:blank' primeiro e usar um pequeno atraso.
+        // Isso obriga o navegador a descartar o cache do iframe e buscar a URL novamente.
+        iframe.src = 'about:blank';
+        
+        setTimeout(function() {
+            iframe.src = targetUrl;
+            // Se necessário, restaura a imagem correta também
+            heroImage.src = isRiskSelected ? imgRisk : imgAIQ;
+        }, 100); // 100ms é suficiente para o navegador processar a mudança
       }
   });
 </script>
