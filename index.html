@@ -28,9 +28,8 @@
     display: flex;
     flex-wrap: wrap;
     background-color: var(--signal-bg);
-    height: 100vh; /* Changed to fixed 100vh so it doesn't push down the page */
+    height: 100vh;
     width: 100%;
-    /* Removed max-width, border-radius, box-shadow, and borders to eliminate the "box" look */
   }
 
   /* --- LEFT COLUMN: VALUE PROP --- */
@@ -38,12 +37,13 @@
     flex: 1;
     min-width: 350px;
     background: #f4f6fa;
-    padding: 60px 40px; /* Slightly increased top padding for a full-page feel */
+    /* Responsive padding: shrinks slightly on smaller screens */
+    padding: clamp(30px, 5vw, 60px) clamp(30px, 5vw, 60px); 
     display: flex;
     flex-direction: column;
     justify-content: flex-start; 
     position: relative;
-    overflow-y: auto; /* Allows left side to scroll safely if screen is very short */
+    overflow-y: auto; 
   }
 
   .brand-logo {
@@ -53,128 +53,147 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 40px;
+    margin-bottom: clamp(20px, 4vh, 40px);
   }
   
   .brand-logo img {
-    height: 40px; 
+    height: 36px; /* Slightly refined logo size */
     width: auto;
     display: block;
   }
 
   .hero-text h2 {
-    font-size: 32px; /* Slightly larger for full screen */
-    line-height: 1.3;
+    font-size: clamp(26px, 3vw, 36px); /* Fluid typography */
+    line-height: 1.25;
     color: var(--signal-dark);
     margin-bottom: 16px;
+    letter-spacing: -0.5px;
   }
 
   .hero-text p {
     color: var(--signal-text);
-    line-height: 1.5;
-    font-size: 16px;
-    margin-bottom: 30px;
+    line-height: 1.6;
+    font-size: clamp(15px, 1.5vw, 17px);
+    margin-bottom: clamp(20px, 4vh, 40px);
+    max-width: 90%;
   }
 
   /* Dynamic Hero Image Style */
   .hero-visual {
     width: 100%;
-    max-width: 450px; /* Reduced to leave room for the testimonial */
-    height: auto;
-    border-radius: var(--radius-sm);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    margin-bottom: 20px; /* Reduced bottom margin */
+    max-width: 480px; 
+    max-height: 40vh; /* Crucial: Prevents image from pushing text off-screen vertically */
+    object-fit: contain; /* Ensures the image aspect ratio is maintained gracefully */
+    margin-bottom: 20px; 
     display: block;
-    background: white; 
+    /* REMOVED: background: white, box-shadow, and border-radius so transparent PNGs look natural */
     transition: opacity 0.2s ease-in-out;
   }
 
   .testimonial {
-    font-size: 14px;
-    color: #666;
+    font-size: clamp(13px, 1.2vw, 15px);
+    color: #555;
     border-left: 3px solid #d6249f;
-    padding-left: 15px;
+    padding-left: 18px;
     line-height: 1.6;
-    margin-top: auto; /* Pushes testimonial to the bottom */
+    margin-top: auto; /* Pushes testimonial to the bottom naturally */
+    max-width: 95%;
   }
   
-  .testimonial strong { display: block; margin-top: 8px; color: var(--signal-dark); }
+  .testimonial strong { 
+    display: block; 
+    margin-top: 10px; 
+    color: var(--signal-dark); 
+    font-weight: 600;
+  }
 
   /* --- RIGHT COLUMN: INTERACTIVE FORM --- */
   .right-col {
     flex: 1.2;
     min-width: 350px;
-    padding: 60px 50px 40px 50px; /* Reduced bottom padding slightly to maximize iframe room */
+    padding: clamp(30px, 5vw, 60px); 
     background: white;
     display: flex;
     flex-direction: column;
-    max-height: 100vh; /* Prevent right column from overflowing the screen */
+    max-height: 100vh;
+  }
+
+  /* Centered inner wrapper for the right column to maintain elegant proportions */
+  .form-container {
+    width: 100%;
+    max-width: 550px; /* Limits the form width so it doesn't stretch awkwardly */
+    margin: 0 auto; /* Centers the form block in the right pane */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
   }
 
   .form-header { margin-bottom: 25px; }
-  .form-header h3 { font-size: 24px; color: var(--signal-dark); margin-bottom: 8px; }
-  .form-header p { color: #888; font-size: 14px; }
+  .form-header h3 { font-size: 26px; color: var(--signal-dark); margin-bottom: 6px; letter-spacing: -0.5px; }
+  .form-header p { color: #666; font-size: 15px; }
 
   /* TOGGLE SELECTOR */
   .product-selector {
     display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
-    max-width: 600px; /* Keeps buttons from getting too wide on large screens */
+    gap: 12px;
+    margin-bottom: 24px;
+    width: 100%;
   }
 
   .option-card {
     flex: 1;
-    border: 2px solid #eee;
+    border: 2px solid #eaeaea;
     border-radius: var(--radius-sm);
-    padding: 15px;
+    padding: 16px;
     cursor: pointer; 
     transition: all 0.2s ease;
     position: relative;
-    opacity: 0.6; 
+    background: #fff;
   }
   
   .option-card:hover {
+    border-color: #d1d1d1;
     background-color: #fafafa;
   }
 
   .option-card.selected {
     border-color: #582be8;
     background-color: rgba(88, 43, 232, 0.03);
-    opacity: 1;
   }
 
   .option-card.selected::after {
     content: '✓';
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 12px;
+    right: 14px;
     color: #582be8;
     font-weight: bold;
+    font-size: 14px;
   }
 
   .card-title { font-weight: 700; font-size: 14px; color: var(--signal-dark); display: block; margin-bottom: 4px; }
-  .card-desc { font-size: 12px; color: #666; line-height: 1.3; }
+  .card-desc { font-size: 12px; color: #666; line-height: 1.4; }
 
   /* IFRAME CONTAINER */
   .iframe-wrapper {
     flex-grow: 1;
     width: 100%;
-    max-width: 600px;
-    margin-top: 10px;
-    position: relative; /* Needed for loading text */
-    min-height: 0; /* Crucial: allows wrapper to shrink and let the iframe scroll */
+    position: relative; 
+    min-height: 0; /* Crucial: allows wrapper to shrink and let the iframe scroll internally */
+    background: #fff;
   }
 
   #form-iframe {
-      border: none !important; /* Removed dashed debug border */
+      border: none !important;
+      display: block;
   }
 
   @media (max-width: 768px) {
     body { height: auto; overflow: auto; }
     .demo-container { flex-direction: column; height: auto; }
     .hero-visual { display: none; } 
-    .right-col { padding: 30px; max-height: none; }
+    .right-col { padding: 30px 20px; max-height: none; }
+    .form-container { max-width: 100%; }
     .iframe-wrapper { height: 600px; flex-grow: 0; }
   }
 </style>
@@ -185,7 +204,8 @@
   <div class="left-col">
     <div>
       <div class="brand-logo">
-        <img src="logo.png" alt="Signal AI">
+        <img src="logo.png" alt="Signal AI" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <span style="display:none; font-size: 24px;">Signal AI</span>
       </div>
       
       <div class="hero-text">
@@ -193,7 +213,7 @@
         <p>Join Fortune 500 companies transforming external data into actionable risk & reputation insights.</p>
       </div>
 
-      <!-- Removed the onerror attribute so the image displays normally -->
+      <!-- Hero image without backgrounds or borders -->
       <img id="hero-image" src="ASK_AIQ_HERO-1.png" alt="Hero Image" class="hero-visual">
     </div>
 
@@ -204,49 +224,51 @@
   </div>
 
   <div class="right-col">
-    <div class="form-header">
-      <h3>Request a Demo</h3>
-      <p>Access your demo.</p>
-    </div>
-
-    <div class="product-selector">
-      <div class="option-card" id="option-risk">
-        <span class="card-title">Risk Platform</span>
-        <span class="card-desc">Proactive identification & ongoing surveillance.</span>
+    <!-- Centered Form Wrapper -->
+    <div class="form-container">
+      
+      <div class="form-header">
+        <h3>Request a Demo</h3>
+        <p>Access your demo.</p>
       </div>
 
-      <div class="option-card selected" id="option-aiq">
-        <span class="card-title">Ask AIQ</span>
-        <span class="card-desc">Instant, generative AI insights & answers.</span>
-      </div>
-    </div>
-
-    <div class="iframe-wrapper">
-        <div style="position: absolute; top: 45%; left: 0; right: 0; text-align: center; z-index: 0; color: #999; font-size: 12px;">
-            Loading secure form... <br>
-            (If blank, check browser security settings)
+      <div class="product-selector">
+        <div class="option-card" id="option-risk">
+          <span class="card-title">Risk Platform</span>
+          <span class="card-desc">Proactive identification & ongoing surveillance.</span>
         </div>
 
-      <iframe 
-        id="form-iframe"
-        src="https://go.signal-ai.com/l/501881/2026-01-13/2bfy7zk" 
-        width="100%" 
-        height="100%"  
-        type="text/html" 
-        frameborder="0" 
-        allowTransparency="true" 
-        style="position: relative; z-index: 1;">
-      </iframe>
-    </div>
+        <div class="option-card selected" id="option-aiq">
+          <span class="card-title">Ask AIQ</span>
+          <span class="card-desc">Instant, generative AI insights & answers.</span>
+        </div>
+      </div>
 
+      <div class="iframe-wrapper">
+          <div style="position: absolute; top: 45%; left: 0; right: 0; text-align: center; z-index: 0; color: #999; font-size: 13px;">
+              Loading secure form... <br>
+              <span style="font-size: 11px; opacity: 0.7;">(If blank, check browser security settings)</span>
+          </div>
+
+        <iframe 
+          id="form-iframe"
+          src="https://go.signal-ai.com/l/501881/2026-01-13/2bfy7zk" 
+          width="100%" 
+          height="100%"  
+          type="text/html" 
+          frameborder="0" 
+          allowTransparency="true" 
+          style="position: relative; z-index: 1;">
+        </iframe>
+      </div>
+
+    </div>
   </div>
 </div>
 
 <script>
   // --- CONFIGURATION ---
   
-  // OPTION 1: Real URLs 
-  // (If these are blank, the server is likely blocking embedding)
   const urlAIQ = "https://go.signal-ai.com/l/501881/2026-01-13/2bfy7zk";
   const urlRisk = "https://go.signal-ai.com/l/501881/2026-01-19/2bfz4s5";
 
@@ -275,29 +297,22 @@
   btnRisk.addEventListener('click', function() { setPageState(true); });
   btnAIQ.addEventListener('click', function() { setPageState(false); });
 
-  // Handle Back Button (Correção para recarregar o formulário)
+  // Handle Back Button 
   window.addEventListener( "pageshow", function ( event ) {
       var historyTraversal = event.persisted || 
                              ( typeof window.performance != "undefined" && 
                                window.performance.navigation.type === 2 );
       
       if ( historyTraversal ) {
-        // 1. Verificar qual opção estava selecionada visualmente
         const isRiskSelected = btnRisk.classList.contains('selected');
-        
-        // 2. Determinar a URL correta baseada na seleção
         const targetUrl = isRiskSelected ? urlRisk : urlAIQ;
 
-        // 3. Forçar o recarregamento do iframe
-        // O truque é definir como 'about:blank' primeiro e usar um pequeno atraso.
-        // Isso obriga o navegador a descartar o cache do iframe e buscar a URL novamente.
         iframe.src = 'about:blank';
         
         setTimeout(function() {
             iframe.src = targetUrl;
-            // Se necessário, restaura a imagem correta também
             heroImage.src = isRiskSelected ? imgRisk : imgAIQ;
-        }, 100); // 100ms é suficiente para o navegador processar a mudança
+        }, 100); 
       }
   });
 </script>
