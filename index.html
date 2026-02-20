@@ -20,13 +20,15 @@
 
   body {
     background-color: var(--signal-bg);
+    height: 100vh;
+    overflow: hidden; /* Prevents the whole page from scrolling */
   }
 
   .demo-container {
     display: flex;
     flex-wrap: wrap;
     background-color: var(--signal-bg);
-    min-height: 100vh; /* Changed to fill the whole screen vertically */
+    height: 100vh; /* Changed to fixed 100vh so it doesn't push down the page */
     width: 100%;
     /* Removed max-width, border-radius, box-shadow, and borders to eliminate the "box" look */
   }
@@ -41,6 +43,7 @@
     flex-direction: column;
     justify-content: flex-start; 
     position: relative;
+    overflow-y: auto; /* Allows left side to scroll safely if screen is very short */
   }
 
   .brand-logo {
@@ -105,6 +108,7 @@
     background: white;
     display: flex;
     flex-direction: column;
+    max-height: 100vh; /* Prevent right column from overflowing the screen */
   }
 
   .form-header { margin-bottom: 25px; }
@@ -159,6 +163,7 @@
     max-width: 600px;
     margin-top: 10px;
     position: relative; /* Needed for loading text */
+    min-height: 0; /* Crucial: allows wrapper to shrink and let the iframe scroll */
   }
 
   #form-iframe {
@@ -188,9 +193,11 @@
   }
 
   @media (max-width: 768px) {
-    .demo-container { flex-direction: column; }
+    body { height: auto; overflow: auto; }
+    .demo-container { flex-direction: column; height: auto; }
     .hero-visual { display: none; } 
-    .right-col { padding: 30px; }
+    .right-col { padding: 30px; max-height: none; }
+    .iframe-wrapper { height: 600px; flex-grow: 0; }
   }
 </style>
 </head>
@@ -243,12 +250,12 @@
             (If blank, check browser security settings)
         </div>
 
-      <!-- HEIGHT REDUCED FROM 1000 TO 650 -->
+      <!-- HEIGHT CHANGED TO 100% TO ENABLE INTERNAL SCROLL -->
       <iframe 
         id="form-iframe"
         src="https://go.signal-ai.com/l/501881/2026-01-13/2bfy7zk" 
         width="100%" 
-        height="650"  
+        height="100%"  
         type="text/html" 
         frameborder="0" 
         allowTransparency="true" 
