@@ -18,18 +18,17 @@
   
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
 
+  body {
+    background-color: var(--signal-bg);
+  }
+
   .demo-container {
     display: flex;
     flex-wrap: wrap;
     background-color: var(--signal-bg);
-    min-height: 750px; 
+    min-height: 100vh; /* Changed to fill the whole screen vertically */
     width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    border-radius: var(--radius-lg);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-    overflow: hidden;
-    border: 1px solid #e1e1e1;
+    /* Removed max-width, border-radius, box-shadow, and borders to eliminate the "box" look */
   }
 
   /* --- LEFT COLUMN: VALUE PROP --- */
@@ -37,7 +36,7 @@
     flex: 1;
     min-width: 350px;
     background: #f4f6fa;
-    padding: 40px;
+    padding: 60px 40px; /* Slightly increased top padding for a full-page feel */
     display: flex;
     flex-direction: column;
     justify-content: flex-start; 
@@ -51,7 +50,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
   }
   
   .brand-logo img {
@@ -61,7 +60,7 @@
   }
 
   .hero-text h2 {
-    font-size: 28px;
+    font-size: 32px; /* Slightly larger for full screen */
     line-height: 1.3;
     color: var(--signal-dark);
     margin-bottom: 16px;
@@ -77,22 +76,23 @@
   /* Dynamic Hero Image Style */
   .hero-visual {
     width: 100%;
+    max-width: 600px;
     height: auto;
     border-radius: var(--radius-sm);
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     display: block;
     background: white; 
     transition: opacity 0.2s ease-in-out;
   }
 
   .testimonial {
-    font-size: 13px;
+    font-size: 14px;
     color: #666;
     border-left: 3px solid #d6249f;
     padding-left: 15px;
-    line-height: 1.5;
-    margin-top: 10px; 
+    line-height: 1.6;
+    margin-top: auto; /* Pushes testimonial to the bottom */
   }
   
   .testimonial strong { display: block; margin-top: 8px; color: var(--signal-dark); }
@@ -101,7 +101,7 @@
   .right-col {
     flex: 1.2;
     min-width: 350px;
-    padding: 50px;
+    padding: 60px 50px;
     background: white;
     display: flex;
     flex-direction: column;
@@ -116,6 +116,7 @@
     display: flex;
     gap: 15px;
     margin-bottom: 20px;
+    max-width: 600px; /* Keeps buttons from getting too wide on large screens */
   }
 
   .option-card {
@@ -155,21 +156,19 @@
   .iframe-wrapper {
     flex-grow: 1;
     width: 100%;
+    max-width: 600px;
     margin-top: 10px;
     position: relative; /* Needed for loading text */
   }
 
-  /* VISUAL DEBUGGING: This makes the iframe area visible even if content is blocked */
   #form-iframe {
-      background-color: #f9f9f9; 
-      border: 1px dashed #e0e0e0 !important; /* Dashed border to see the box */
-      border-radius: 8px;
+      border: none !important; /* Removed dashed debug border */
   }
 
   .trust-signals {
-    margin-top: 15px;
+    margin-top: 25px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 15px;
     opacity: 0.8;
     padding-bottom: 20px;
@@ -178,14 +177,14 @@
   .badge {
     background: #f4f6fa;
     border: 1px solid #eee;
-    padding: 5px 10px;
-    font-size: 10px;
+    padding: 6px 12px;
+    font-size: 11px;
     font-weight: 700;
     color: var(--signal-dark);
     border-radius: 4px;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
   }
 
   @media (max-width: 768px) {
@@ -201,7 +200,9 @@
   <div class="left-col">
     <div>
       <div class="brand-logo">
-        <img src="logo.png" alt="Signal AI">
+        <!-- Replace with your actual logo URL or SVG -->
+        <img src="logo.png" alt="Signal AI" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <span style="display:none; font-size: 24px;">Signal AI</span>
       </div>
       
       <div class="hero-text">
@@ -209,7 +210,7 @@
         <p>Join Fortune 500 companies transforming external data into actionable risk & reputation insights.</p>
       </div>
 
-      <img id="hero-image" src="ASK_AIQ_HERO-1.png" alt="Hero Image" class="hero-visual">
+      <img id="hero-image" src="ASK_AIQ_HERO-1.png" alt="Hero Image" class="hero-visual" onerror="this.style.display='none'">
     </div>
 
     <div class="testimonial">
@@ -242,11 +243,12 @@
             (If blank, check browser security settings)
         </div>
 
+      <!-- HEIGHT REDUCED FROM 1000 TO 650 -->
       <iframe 
         id="form-iframe"
         src="https://go.signal-ai.com/l/501881/2026-01-13/2bfy7zk" 
         width="100%" 
-        height="1000" 
+        height="650"  
         type="text/html" 
         frameborder="0" 
         allowTransparency="true" 
@@ -269,10 +271,6 @@
   // (If these are blank, the server is likely blocking embedding)
   const urlAIQ = "https://go.signal-ai.com/l/501881/2026-01-13/2bfy7zk";
   const urlRisk = "https://go.signal-ai.com/l/501881/2026-01-19/2bfz4s5";
-
-  // OPTION 2: Mockup URLs (Uncomment these if you just want to test the design logic)
-  // const urlAIQ = "https://en.wikipedia.org/wiki/Artificial_intelligence"; 
-  // const urlRisk = "https://en.wikipedia.org/wiki/Risk_management";
 
   const imgAIQ = "ASK_AIQ_HERO-1.png";
   const imgRisk = "Risk_Platform_hero_2.png";
@@ -299,7 +297,6 @@
   btnRisk.addEventListener('click', function() { setPageState(true); });
   btnAIQ.addEventListener('click', function() { setPageState(false); });
 
-  // Handle Back Button
   // Handle Back Button (Correção para recarregar o formulário)
   window.addEventListener( "pageshow", function ( event ) {
       var historyTraversal = event.persisted || 
