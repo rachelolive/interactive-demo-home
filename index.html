@@ -79,11 +79,11 @@
   /* Dynamic Hero Image Style */
   .hero-visual {
     width: 100%;
-    max-width: 600px;
+    max-width: 450px; /* Reduced to leave room for the testimonial */
     height: auto;
     border-radius: var(--radius-sm);
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    margin-bottom: 40px;
+    margin-bottom: 20px; /* Reduced bottom margin */
     display: block;
     background: white; 
     transition: opacity 0.2s ease-in-out;
@@ -104,7 +104,7 @@
   .right-col {
     flex: 1.2;
     min-width: 350px;
-    padding: 60px 50px;
+    padding: 60px 50px 40px 50px; /* Reduced bottom padding slightly to maximize iframe room */
     background: white;
     display: flex;
     flex-direction: column;
@@ -170,28 +170,6 @@
       border: none !important; /* Removed dashed debug border */
   }
 
-  .trust-signals {
-    margin-top: 25px;
-    display: flex;
-    justify-content: flex-start;
-    gap: 15px;
-    opacity: 0.8;
-    padding-bottom: 20px;
-  }
-  
-  .badge {
-    background: #f4f6fa;
-    border: 1px solid #eee;
-    padding: 6px 12px;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--signal-dark);
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
   @media (max-width: 768px) {
     body { height: auto; overflow: auto; }
     .demo-container { flex-direction: column; height: auto; }
@@ -207,9 +185,7 @@
   <div class="left-col">
     <div>
       <div class="brand-logo">
-        <!-- Replace with your actual logo URL or SVG -->
-        <img src="logo.png" alt="Signal AI" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-        <span style="display:none; font-size: 24px;">Signal AI</span>
+        <img src="logo.png" alt="Signal AI">
       </div>
       
       <div class="hero-text">
@@ -217,7 +193,8 @@
         <p>Join Fortune 500 companies transforming external data into actionable risk & reputation insights.</p>
       </div>
 
-      <img id="hero-image" src="ASK_AIQ_HERO-1.png" alt="Hero Image" class="hero-visual" onerror="this.style.display='none'">
+      <!-- Removed the onerror attribute so the image displays normally -->
+      <img id="hero-image" src="ASK_AIQ_HERO-1.png" alt="Hero Image" class="hero-visual">
     </div>
 
     <div class="testimonial">
@@ -250,7 +227,6 @@
             (If blank, check browser security settings)
         </div>
 
-      <!-- HEIGHT CHANGED TO 100% TO ENABLE INTERNAL SCROLL -->
       <iframe 
         id="form-iframe"
         src="https://go.signal-ai.com/l/501881/2026-01-13/2bfy7zk" 
@@ -261,11 +237,6 @@
         allowTransparency="true" 
         style="position: relative; z-index: 1;">
       </iframe>
-    </div>
-      
-    <div class="trust-signals">
-      <div class="badge"><span style="color:#d6249f">★</span> GRC Innovation Award winner</div>
-      <div class="badge"><span style="color:#d6249f">★</span> Best Use of AI in Risk Management</div>
     </div>
 
   </div>
