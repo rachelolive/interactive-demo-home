@@ -21,12 +21,12 @@
   body {
     background-color: var(--signal-bg);
     height: 100vh;
-    overflow: hidden; /* Prevents the whole page from scrolling */
+    overflow: hidden; /* Locks the main body so we have a true split-screen app feel */
   }
 
   .demo-container {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* Prevents awkward column wrapping on mid-sized screens */
     background-color: var(--signal-bg);
     height: 100vh;
     width: 100%;
@@ -37,13 +37,13 @@
     flex: 1;
     min-width: 350px;
     background: #f4f6fa;
-    /* Responsive padding: shrinks slightly on smaller screens */
     padding: clamp(30px, 5vw, 60px) clamp(30px, 5vw, 60px); 
     display: flex;
     flex-direction: column;
     justify-content: flex-start; 
     position: relative;
-    overflow-y: auto; 
+    height: 100vh;
+    overflow-y: auto; /* Allows left column to scroll if screen is very short */
   }
 
   .brand-logo {
@@ -57,13 +57,13 @@
   }
   
   .brand-logo img {
-    height: 36px; /* Slightly refined logo size */
+    height: 36px; 
     width: auto;
     display: block;
   }
 
   .hero-text h2 {
-    font-size: clamp(26px, 3vw, 36px); /* Fluid typography */
+    font-size: clamp(26px, 3vw, 36px);
     line-height: 1.25;
     color: var(--signal-dark);
     margin-bottom: 16px;
@@ -82,11 +82,10 @@
   .hero-visual {
     width: 100%;
     max-width: 480px; 
-    max-height: 40vh; /* Crucial: Prevents image from pushing text off-screen vertically */
-    object-fit: contain; /* Ensures the image aspect ratio is maintained gracefully */
-    margin-bottom: 20px; 
+    max-height: 35vh; 
+    object-fit: contain; 
+    margin-bottom: 30px; 
     display: block;
-    /* REMOVED: background: white, box-shadow, and border-radius so transparent PNGs look natural */
     transition: opacity 0.2s ease-in-out;
   }
 
@@ -96,7 +95,8 @@
     border-left: 3px solid #d6249f;
     padding-left: 18px;
     line-height: 1.6;
-    margin-top: auto; /* Pushes testimonial to the bottom naturally */
+    margin-top: 20px; /* Fixed margin instead of auto to prevent layout clipping */
+    margin-bottom: 40px; /* Ensures padding at the absolute bottom of scroll */
     max-width: 95%;
   }
   
@@ -110,22 +110,22 @@
   /* --- RIGHT COLUMN: INTERACTIVE FORM --- */
   .right-col {
     flex: 1.2;
-    min-width: 350px;
+    min-width: 400px;
     padding: clamp(30px, 5vw, 60px); 
     background: white;
     display: flex;
     flex-direction: column;
-    max-height: 100vh;
+    height: 100vh;
+    overflow-y: auto; /* Allows right column to scroll its content if screen is short */
   }
 
-  /* Centered inner wrapper for the right column to maintain elegant proportions */
   .form-container {
     width: 100%;
-    max-width: 550px; /* Limits the form width so it doesn't stretch awkwardly */
-    margin: 0 auto; /* Centers the form block in the right pane */
+    max-width: 550px; 
+    margin: 0 auto; 
     display: flex;
     flex-direction: column;
-    height: 100%;
+    /* Height removed to allow content to dictate natural scroll height */
   }
 
   .form-header { margin-bottom: 25px; }
@@ -176,25 +176,31 @@
 
   /* IFRAME CONTAINER */
   .iframe-wrapper {
-    flex-grow: 1;
     width: 100%;
     position: relative; 
-    min-height: 0; /* Crucial: allows wrapper to shrink and let the iframe scroll internally */
+    min-height: 700px; /* Guarantees the iframe always has enough height to render nicely */
     background: #fff;
+    margin-bottom: 40px; /* Spacing at the bottom of the scroll */
   }
 
   #form-iframe {
       border: none !important;
       display: block;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
   }
 
-  @media (max-width: 768px) {
-    body { height: auto; overflow: auto; }
+  /* Trigger stacked mobile layout earlier (tablets & small laptops) to prevent horizontal squishing */
+  @media (max-width: 992px) {
+    body { height: auto; overflow: visible; }
     .demo-container { flex-direction: column; height: auto; }
-    .hero-visual { display: none; } 
-    .right-col { padding: 30px 20px; max-height: none; }
+    .left-col { height: auto; overflow-y: visible; min-height: 0; }
+    .right-col { height: auto; overflow-y: visible; min-width: 100%; padding: 40px 20px; }
     .form-container { max-width: 100%; }
-    .iframe-wrapper { height: 600px; flex-grow: 0; }
+    .iframe-wrapper { height: 700px; }
   }
 </style>
 </head>
@@ -213,7 +219,6 @@
         <p>Join Fortune 500 companies transforming external data into actionable risk & reputation insights.</p>
       </div>
 
-      <!-- Hero image without backgrounds or borders -->
       <img id="hero-image" src="ASK_AIQ_HERO-1.png" alt="Hero Image" class="hero-visual">
     </div>
 
@@ -224,7 +229,6 @@
   </div>
 
   <div class="right-col">
-    <!-- Centered Form Wrapper -->
     <div class="form-container">
       
       <div class="form-header">
@@ -253,12 +257,10 @@
         <iframe 
           id="form-iframe"
           src="https://go.signal-ai.com/l/501881/2026-01-13/2bfy7zk" 
-          width="100%" 
-          height="100%"  
           type="text/html" 
           frameborder="0" 
           allowTransparency="true" 
-          style="position: relative; z-index: 1;">
+          style="z-index: 1;">
         </iframe>
       </div>
 
